@@ -11,7 +11,7 @@ namespace console_auth_device_flow
 {
     class Program
     {
-        static IDiscoveryCache _cache = new DiscoveryCache(Constants.Authority);
+        static IDiscoveryCache _cache = new DiscoveryCache(ConstantsSandbox.Authority);
         static DiscoveryDocumentResponse disco;
 
 
@@ -44,18 +44,14 @@ namespace console_auth_device_flow
             var client = new HttpClient();
             disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
-                Address = Constants.Authority,
-                Policy =
-                {
-                    RequireHttps = false
-                }
+                Address = ConstantsSandbox.Authority
             });
 
             var response = await client.RequestDeviceAuthorizationAsync(new DeviceAuthorizationRequest
             {
                 Address = disco.DeviceAuthorizationEndpoint,
-                ClientId = "device",
-                ClientSecret = "E39F33E9-C1BD-4D5F-895F-9D9E3982B557"
+                ClientId = ConstantsSandbox.SampleClientId,
+                ClientSecret = ConstantsSandbox.SampleClientSecret
             });
 
             if (response.IsError) throw new Exception(response.Error);
@@ -82,8 +78,8 @@ namespace console_auth_device_flow
                 var response = await client.RequestDeviceTokenAsync(new DeviceTokenRequest
                 {
                     Address = disco.TokenEndpoint,
-                    ClientId = "device",
-                    ClientSecret = "E39F33E9-C1BD-4D5F-895F-9D9E3982B557",
+                    ClientId = ConstantsSandbox.SampleClientId,
+                    ClientSecret = ConstantsSandbox.SampleClientSecret,
                     DeviceCode = authorizeResponse.DeviceCode
                 });
 
@@ -110,7 +106,7 @@ namespace console_auth_device_flow
         {
             Console.WriteLine("Using refresh token: {0}", refreshToken);
             
-            var baseAddress = Constants.SampleApi;
+            var baseAddress = ConstantsSandbox.SampleApi;
 
             var client = new HttpClient
             {
@@ -120,9 +116,8 @@ namespace console_auth_device_flow
             var response = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
             {
                 Address = disco.TokenEndpoint,
-
-                ClientId = "device",
-                ClientSecret = "E39F33E9-C1BD-4D5F-895F-9D9E3982B557",
+                ClientId = ConstantsSandbox.SampleClientId,
+                ClientSecret = ConstantsSandbox.SampleClientSecret,
                 RefreshToken = refreshToken
             });
 
@@ -132,7 +127,7 @@ namespace console_auth_device_flow
 
         static async Task CallServiceAsync(string token)
         {
-            var baseAddress = Constants.SampleApi;
+            var baseAddress = ConstantsSandbox.SampleApi;
 
             var client = new HttpClient
             {
