@@ -1,7 +1,13 @@
 namespace Clients
 {
-    public class ConstantsSandbox
+    public class Constants
     {
+
+        //LOCAL
+        // public const string Authority = "http://host.docker.internal:5550";
+        // public const string SampleApi = "http://localhost:5210/";
+        
+        //SANDBOX
         public const string Authority = "https://login-sandbox.nbanks.net";
         public const string SampleApi = "https://sandbox.nbanks.net/";
         public const string SampleClientId = "device";
